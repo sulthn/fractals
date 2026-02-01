@@ -205,6 +205,8 @@ int main(void)
                 DrawText(TextFormat("I, R = %.16f, %.16f", offset[0], offset[1]), 10, 15, 10, RAYWHITE);
                 DrawText(TextFormat("I = %x, %x, %x", offsetI[0], offsetI[1], offsetI[0] + offsetI[1]), 10, 30, 10, RAYWHITE);
                 DrawText(TextFormat("R = %x, %x, %x", offsetR[0], offsetR[1], offsetR[0] + offsetR[1]), 10, 45, 10, RAYWHITE);
+				DrawText(TextFormat("iterations = %d", maxIterations), 10, 60, 10, RAYWHITE);
+				DrawText(TextFormat("zoom = %f", zoom), 10, 75, 10, RAYWHITE);
                 /*DrawText("Press Mouse buttons right/left to zoom in/out and move", 10, 15, 10, RAYWHITE);
                 DrawText("Press F1 to toggle these controls", 10, 30, 10, RAYWHITE);
                 DrawText("Press [1 - 6] to change point of interest", 10, 45, 10, RAYWHITE);
