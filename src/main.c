@@ -57,7 +57,7 @@ int main(void)
 
     // Offset and zoom to draw the mandelbrot set at. (centered on screen and default size)
     double offset[2] = { startingOffset[0], startingOffset[1] };
-    float zoom = startingZoom;
+    double zoom = startingZoom;
     // Depending on the zoom the mximum number of iterations must be adapted to get more detail as we zzoom in
     // The solution is not perfect, so a control has been added to increase/decrease the number of iterations with UP/DOWN keys
     int maxIterations = 500;
@@ -72,17 +72,19 @@ int main(void)
 
     uint32_t offsetR[2] = { 0, 0 };
     uint32_t offsetI[2] = { 0, 0 };
+    uint32_t zoomVec[2] = { 0, 0 };
 
-    dbtoint(offset[0], offsetR);
+    /*dbtoint(offset[0], offsetR);
     dbtoint(offset[1], offsetI);
 
     // Upload the shader uniform values!
     SetShaderValue(shader, zoomLoc, &zoom, SHADER_UNIFORM_FLOAT);
     SetShaderValue(shader, offsetRLoc, offsetR, SHADER_UNIFORM_IVEC2);
     SetShaderValue(shader, offsetILoc, offsetI, SHADER_UNIFORM_IVEC2);
-    SetShaderValue(shader, maxIterationsLoc, &maxIterations, SHADER_UNIFORM_INT);
+    SetShaderValue(shader, maxIterationsLoc, &maxIterations, SHADER_UNIFORM_INT);*/
 
     bool showControls = true;           // Show controls
+    bool updateShader = true;
 
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -92,7 +94,6 @@ int main(void)
     {
         // Update
         //----------------------------------------------------------------------------------
-        bool updateShader = false;
 
         // Press [1 - 6] to reset c to a point of interest
         if (IsKeyPressed(KEY_ONE) ||
@@ -150,8 +151,8 @@ int main(void)
             double offsetVelocity[2];
             // Find the velocity at which to change the camera. Take the distance of the mouse
             // From the center of the screen as the direction, and adjust magnitude based on the current zoom
-            offsetVelocity[0] = (mousePos.x/(double)screenWidth - 0.5f)*offsetSpeedMul/(double)zoom;
-            offsetVelocity[1] = (mousePos.y/(double)screenHeight - 0.5f)*offsetSpeedMul/(double)zoom;
+            offsetVelocity[0] = (mousePos.x/(double)screenWidth - 0.5f)*offsetSpeedMul/zoom;
+            offsetVelocity[1] = (mousePos.y/(double)screenHeight - 0.5f)*offsetSpeedMul/zoom;
 
             // Apply move velocity to camera
             offset[0] += GetFrameTime()*offsetVelocity[0];
@@ -169,9 +170,10 @@ int main(void)
 
             dbtoint(offset[0], offsetR);
             dbtoint(offset[1], offsetI);
+            dbtoint(zoom, zoomVec);
 
             // Update the shader uniform values!
-            SetShaderValue(shader, zoomLoc, &zoom, SHADER_UNIFORM_FLOAT);
+            SetShaderValue(shader, zoomLoc, zoomVec, SHADER_UNIFORM_IVEC2);
             SetShaderValue(shader, offsetRLoc, offsetR, SHADER_UNIFORM_IVEC2);
             SetShaderValue(shader, offsetILoc, offsetI, SHADER_UNIFORM_IVEC2);
             SetShaderValue(shader, maxIterationsLoc, &maxIterations, SHADER_UNIFORM_INT);
@@ -204,7 +206,7 @@ int main(void)
 
             if (showControls)
             {
-                DrawText(TextFormat("I, R = %.16f, %.16f", offset[0], offset[1]), 10, 15, 10, RAYWHITE);
+                DrawText(TextFormat("I, R = %.16f, %.16f", offset[0], offset[1]), 10, 15, 10, BLACK);
                 DrawText(TextFormat("I = %x, %x, %x", offsetI[0], offsetI[1], offsetI[0] + offsetI[1]), 10, 30, 10, RAYWHITE);
                 DrawText(TextFormat("R = %x, %x, %x", offsetR[0], offsetR[1], offsetR[0] + offsetR[1]), 10, 45, 10, RAYWHITE);
 				DrawText(TextFormat("iterations = %d", maxIterations), 10, 60, 10, RAYWHITE);

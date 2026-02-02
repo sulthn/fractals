@@ -2,11 +2,11 @@ CC = gcc
 
 SRC_DIR = src
 BUILD_DIR = build
-#RAYLIB_PATH = C:\raylib\raylib
-RAYLIB_PATH = /usr/local/Cellar/raylib/5.5
+RAYLIB_PATH = C:\raylib\raylib
+#RAYLIB_PATH = /usr/local/Cellar/raylib/5.5
 
 ifeq ($(OS), Windows_NT)
-    detected_OS := Windows
+    detected_OS := windows
 else
     # Check for Unix-like systems using uname
     detected_OS := $(shell uname -s)

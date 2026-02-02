@@ -11,21 +11,22 @@ in vec4 fragColor;
 // Output fragment color
 out vec4 finalColor;
 
-uniform float zoom;             // Zoom of the scale
+uniform ivec2 zoom;             // Zoom of the scale
 uniform ivec2 offsetR;          // Offset Real (double in bits)
 uniform ivec2 offsetI;          // Offset Imaginary (double in bits)
 uniform int maxIterations;      // Max iterations per pixel
 
-const float max = 2.0;          // We consider infinite as 4.0: if a point reaches a distance of 4.0 it will escape to infinity
-const float max2 = max*max;     // Square of max to avoid computing square root
+const double max = 4.0;          // We consider infinite as 4.0: if a point reaches a distance of 4.0 it will escape to infinity
+const double max2 = max*max;     // Square of max to avoid computing square root
 
 void main()
 {
     dvec2 offset = dvec2(packDouble2x32(offsetR), packDouble2x32(offsetI));
+    double zoom_d = packDouble2x32(zoom);
 
     // The pixel coordinates are scaled so they are on the mandelbrot scale
     // NOTE: fragTexCoord already comes as normalized screen coordinates but offset must be normalized before scaling and zoom
-    dvec2 c = dvec2((fragTexCoord.x - 0.5)*2, (fragTexCoord.y - 0.5)*1.25)/zoom;
+    dvec2 c = dvec2((fragTexCoord.x - 0.5), (fragTexCoord.y - 0.5))/zoom_d;
     c.x += offset.x;
     c.y += offset.y;
     double a = 0.0;
