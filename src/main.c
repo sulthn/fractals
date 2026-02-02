@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#include "defs.h"
+
 #define GLSL_VERSION 400
 
 // A few good interesting places
@@ -16,13 +18,13 @@ const float pointsOfInterest[6][3] =
     { 0.317785531f, -0.0322612226f, 29297.9258f },
 };
 
-const int screenWidth = 800;
-const int screenHeight = 500;
-const float zoomSpeed = 1.01f;
-const float offsetSpeedMul = 2.0f;
+const int screenWidth = SCREENWIDTH;
+const int screenHeight = SCREENHEIGHT;
+const double zoomSpeed = 1.01f;
+const double offsetSpeedMul = 2.0f;
 
 const float startingZoom = 0.6f;
-const float startingOffset[2] = { -0.5f, 0.0f };
+const double startingOffset[2] = { -0.5f, 0.0f };
 
 void dbtoint(double value, uint32_t* array)
 {
@@ -48,7 +50,7 @@ int main(void)
 
     // Load mandelbrot set shader
     // NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
-    Shader shader = LoadShader(0, TextFormat("resources/shaders/mandelbrot_set.fs", GLSL_VERSION));
+    Shader shader = LoadShader(0, "resources/shaders/mandelbrot_set.fs");
 
     // Create a RenderTexture2D to be used for render to texture
     RenderTexture2D target = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
@@ -145,15 +147,15 @@ int main(void)
             zoom *= IsMouseButtonDown(MOUSE_BUTTON_LEFT)? zoomSpeed : (1.0f/zoomSpeed);
 
             const Vector2 mousePos = GetMousePosition();
-            Vector2 offsetVelocity;
+            double offsetVelocity[2];
             // Find the velocity at which to change the camera. Take the distance of the mouse
             // From the center of the screen as the direction, and adjust magnitude based on the current zoom
-            offsetVelocity.x = (mousePos.x/(float)screenWidth - 0.5f)*offsetSpeedMul/zoom;
-            offsetVelocity.y = (mousePos.y/(float)screenHeight - 0.5f)*offsetSpeedMul/zoom;
+            offsetVelocity[0] = (mousePos.x/(double)screenWidth - 0.5f)*offsetSpeedMul/(double)zoom;
+            offsetVelocity[1] = (mousePos.y/(double)screenHeight - 0.5f)*offsetSpeedMul/(double)zoom;
 
             // Apply move velocity to camera
-            offset[0] += GetFrameTime()*offsetVelocity.x;
-            offset[1] += GetFrameTime()*offsetVelocity.y;
+            offset[0] += GetFrameTime()*offsetVelocity[0];
+            offset[1] += GetFrameTime()*offsetVelocity[1];
 
             updateShader = true;
         }

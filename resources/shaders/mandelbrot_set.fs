@@ -25,7 +25,7 @@ void main()
 
     // The pixel coordinates are scaled so they are on the mandelbrot scale
     // NOTE: fragTexCoord already comes as normalized screen coordinates but offset must be normalized before scaling and zoom
-    dvec2 c = dvec2((fragTexCoord.x - 0.5)*2.5, (fragTexCoord.y - 0.5)*1.5)/zoom;
+    dvec2 c = dvec2((fragTexCoord.x - 0.5)*2, (fragTexCoord.y - 0.5)*1.25)/zoom;
     c.x += offset.x;
     c.y += offset.y;
     double a = 0.0;
