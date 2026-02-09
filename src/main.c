@@ -59,7 +59,7 @@ int main(void)
     double zoom = startingZoom;
     // Depending on the zoom the mximum number of iterations must be adapted to get more detail as we zzoom in
     // The solution is not perfect, so a control has been added to increase/decrease the number of iterations with UP/DOWN keys
-    int maxIterations = 500;
+    int maxIterations = 250;
     float maxIterationsMultiplier = 250.0f;
 
     // Get variable (uniform) locations on the shader to connect with the program

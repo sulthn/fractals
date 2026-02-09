@@ -16,7 +16,7 @@ uniform ivec2 offsetR;          // Offset Real (double in bits)
 uniform ivec2 offsetI;          // Offset Imaginary (double in bits)
 uniform int maxIterations;      // Max iterations per pixel
 
-const double max = 4.0;          // We consider infinite as 4.0: if a point reaches a distance of 4.0 it will escape to infinity
+const double max = 2.0;          // We consider infinite as 4.0: if a point reaches a distance of 4.0 it will escape to infinity
 const double max2 = max*max;     // Square of max to avoid computing square root
 
 void main()
