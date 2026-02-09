@@ -2,7 +2,7 @@ CC = gcc
 
 SRC_DIR = src
 BUILD_DIR = build
-RAYLIB_PATH = C:\raylib\raylib
+#RAYLIB_PATH = C:\raylib\raylib
 #RAYLIB_PATH = /usr/local/Cellar/raylib/5.5
 
 ifeq ($(OS), Windows_NT)
@@ -18,15 +18,15 @@ else
 endif
 
 ifeq ($(detected_OS),windows)
+	RAYLIB_PATH = C:\raylib\raylib
 	LIBS = -lraylib -lopengl32 -lgdi32 -lwinmm # Windows_NT
 	LIB_PATH = -L. -L$(RAYLIB_PATH)/src
 	INCLUDE_PATH = -I. -I$(RAYLIB_PATH)/src -I$(RAYLIB_PATH)/src/external
 else ifeq ($(detected_OS),linux)
-    # Linux-specific commands/variables
     #EXECUTABLE := 
     #PLATFORM_FLAGS := 
 else ifeq ($(detected_OS),darwin)
-    # macOS-specific commands/variables
+    RAYLIB_PATH = /usr/local/Cellar/raylib/5.5
     LIBS = -lraylib -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
 	LIB_PATH = -L. -L$(RAYLIB_PATH)/lib
 	INCLUDE_PATH = -I. -I$(RAYLIB_PATH)/include        

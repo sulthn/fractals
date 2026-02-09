@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <strings.h>
 
 #include "defs.h"
 
@@ -28,14 +29,12 @@ const double startingOffset[2] = { -0.5f, 0.0f };
 
 void dbtoint(double value, uint32_t* array)
 {
-    union {
-        double value;
-        uint64_t bits;
-    } transfer;
+    uint64_t a;
 
-    transfer.value = value;
-    array[1] = transfer.bits >> 32;
-    array[0] = transfer.bits & 0xffff;
+    memcpy(&a, &value, sizeof(a));
+
+    array[1] = a >> 32;
+    array[0] = a  & 0xffffffff;
     //printf("%llx, %x, %x\n", transfer.bits, array[0], array[1]);
 }
 
@@ -206,9 +205,9 @@ int main(void)
 
             if (showControls)
             {
-                DrawText(TextFormat("I, R = %.16f, %.16f", offset[0], offset[1]), 10, 15, 10, BLACK);
-                DrawText(TextFormat("I = %x, %x, %x", offsetI[0], offsetI[1], offsetI[0] + offsetI[1]), 10, 30, 10, RAYWHITE);
-                DrawText(TextFormat("R = %x, %x, %x", offsetR[0], offsetR[1], offsetR[0] + offsetR[1]), 10, 45, 10, RAYWHITE);
+                DrawText(TextFormat("I, R = %.20f, %.20f", offset[0], offset[1]), 10, 15, 10, BLACK);
+                DrawText(TextFormat("I = %x, %x, %x", offsetI[0], offsetI[1], offsetI[0] + offsetI[1]), 10, 30, 10, BLACK);
+                DrawText(TextFormat("R = %x, %x, %x", offsetR[0], offsetR[1], offsetR[0] + offsetR[1]), 10, 45, 10, BLACK);
 				DrawText(TextFormat("iterations = %d", maxIterations), 10, 60, 10, RAYWHITE);
 				DrawText(TextFormat("zoom = %f", zoom), 10, 75, 10, RAYWHITE);
                 /*DrawText("Press Mouse buttons right/left to zoom in/out and move", 10, 15, 10, RAYWHITE);
