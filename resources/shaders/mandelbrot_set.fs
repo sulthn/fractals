@@ -16,7 +16,7 @@ uniform ivec2 offsetR;          // Offset Real (double in bits)
 uniform ivec2 offsetI;          // Offset Imaginary (double in bits)
 uniform int maxIterations;      // Max iterations per pixel
 
-const double max = 2.0;          // We consider infinite as 4.0: if a point reaches a distance of 4.0 it will escape to infinity
+const double max = 4.0;          // We consider infinite as 4.0: if a point reaches a distance of 4.0 it will escape to infinity
 const double max2 = max*max;     // Square of max to avoid computing square root
 
 void main()
@@ -26,11 +26,11 @@ void main()
 
     // The pixel coordinates are scaled so they are on the mandelbrot scale
     // NOTE: fragTexCoord already comes as normalized screen coordinates but offset must be normalized before scaling and zoom
-    dvec2 c = dvec2((fragTexCoord.x - 0.5)*2.0f, (fragTexCoord.y - 0.5)*1.25f)/zoom_d;
+    dvec2 c = dvec2((fragTexCoord.x - 0.5)*2.0f, (fragTexCoord.y - 0.5)*1.0f)/zoom_d;
     c.x += offset.x;
     c.y += offset.y;
-    double a = 0.0;
-    double b = 0.0;
+    double Zi = 0.0;
+    double Zr = 0.0;
 
     // The Mandelbrot set is a two-dimensional set defined in the complex plane on which the iteration of the function
     // Fc(z) = z^2 + c on the complex numbers c from the plane does not diverge to infinity starting at z = 0
@@ -39,14 +39,14 @@ void main()
     int iter = 0;
     for (iter = 0; iter < maxIterations; ++iter)
     {
-        double aa = a*a;
-        double bb = b*b;
-        if (aa + bb > max2)
+        double Zi2 = Zi*Zi;
+        double Zr2 = Zr*Zr;
+        if (Zi2 + Zr2 > max2)
             break;
 
-        double twoab = 2.0*a*b;
-        a = aa - bb + c.x;
-        b = twoab + c.y;
+        double twoZiZr = 2.0*Zi*Zr;
+        Zi = Zi2 - Zr2 + c.x;
+        Zr = twoZiZr + c.y;
     }
 
     if (iter >= maxIterations)

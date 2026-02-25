@@ -165,7 +165,7 @@ int main(void)
         {
             // As we zoom in, increase the number of max iterations to get more detail
             // Aproximate formula, but it works-ish
-            maxIterations = (int)(sqrtf(2.0f*sqrtf(fabsf(1.0f - sqrtf(37.5f*zoom))))*maxIterationsMultiplier);
+            maxIterations = (int)(sqrt(2.0f*sqrt(fabs(1.0f - sqrt(37.5f*zoom))))*maxIterationsMultiplier);
 
             dbtoint(offset[0], offsetR);
             dbtoint(offset[1], offsetI);
